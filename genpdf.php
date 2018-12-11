@@ -104,7 +104,7 @@ while($inforow = mysqli_fetch_assoc($inforesult)) {
 
   // Optional 'Volunteer:' line
   $pdf->SetXY(20,75);
-  $pdf->Write(6,'Trapper: ' . $trapper);
+  $pdf->Write(6, "Trapper:\n    (if different than above)" . $trapper);
   
   // 'Footer' info inside box
   $pdf->SetXY(65,89);
