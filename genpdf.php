@@ -84,7 +84,10 @@ while($inforow = mysqli_fetch_assoc($inforesult)) {
   $pdf->SetXY(75,18);
   $pdf->MultiCell(80,5,'Best Friends Animal Society - Utah Community Cat Voucher',0,'C');
   // 'Issued to' information
-  $pdf->SetXY(40,40);
+  $pdf->SetXY(38,40);
+  $pdf->SetFont('Times', 'B', 12);
+  $pdf->Write(4, "*");
+  $pdf->SetFont('');
   $pdf->SetFont('Times','',12);
   $pdf->Write(6,'Issued to:');
   $pdf->SetXY(40,43);
@@ -231,22 +234,22 @@ while($inforow = mysqli_fetch_assoc($inforesult)) {
   
   1.   Vouchers are non-transferable.
   2.   If the vouchers are being used in a way deemed inappropriate, we will not allow participation
-         in the program.
+        in the program.
   3.   The expiration date cannot be extended.
-  4.     Call this clinic to make an appointment before the expiration date. Be sure to mention you
+  4.   Call this clinic to make an appointment before the expiration date. Be sure to mention you
         are conducting Trap, Neuter, Return (TNR) and have a Community Cat voucher.
-  5.     Take this voucher to the hospital when you take your Community Cat to be spayed or neutered.
+  5.   Take this voucher to the hospital when you take your Community Cat to be spayed or neutered.
   6.   The co-pay amount should be paid to the vet office and goes towards the cost of the surgery
         to help the funding of this program.
   7.   For the protection of the vet staff, all cats should be brought to the clinic in a humane
         trap, unless the vet staff has given permission to bring in a carrier for free-roaming, tame cats.
- 8.  Whenever a cat is in a trap, the trap should be fully covered with a sheet at all times. When
-      setting the trap, please line the bottom with newspaper. See Trapping Guidelines or
-      search online: "Alley Cat Allies Trapping An Entire Colony" video for additional  information.
+  8.  Whenever a cat is in a trap, the trap should be fully covered with a sheet at all times. When
+       setting the trap, please line the bottom with newspaper. See Trapping Guidelines or
+       search online: "Alley Cat Allies Trapping An Entire Colony" video for additional  information.
 ',1);
   $pdf->SetLeftMargin(25);
   $pdf->SetRightMargin(115);
-  $pdf->SetXY(25,84);
+  $pdf->SetXY(25,88);
   $counter = 0;
   $HEIGHT = 4.5;
   while($vetrow = mysqli_fetch_assoc($vetresult)) {
@@ -261,7 +264,7 @@ while($inforow = mysqli_fetch_assoc($inforesult)) {
     if (++$counter == 5) {
       $pdf->SetLeftMargin(120);
       $pdf->SetRightMargin(25);
-      $pdf->SetXY(120,84);
+      $pdf->SetXY(120,88);
     }
   }
   $pdf->SetRightMargin(15);
