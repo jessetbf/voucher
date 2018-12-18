@@ -181,13 +181,13 @@ while($inforow = mysqli_fetch_assoc($inforesult)) {
  */
   $pdf->Write(4, "\n*");
   $pdf->SetFont('');
-  $pdf->Write(4,"Name of Cat and Description    ");
+  $pdf->Write(4,"Description: (color, fur              ");
   $CurrY = $pdf->GetY();
   $CurrX = $pdf->GetX();
   $pdf->Cell(128,16,'',1,1);
   $pdf->SetXY($CurrX,$CurrY);
-  $pdf->Write(4,"\n(color, fur length, eye color,\n");
-  $pdf->Write(4,"markings, etc.):\n\n\n            ");
+  $pdf->Write(4,"\nlength, eye color, markings,\n");
+  $pdf->Write(4,"name if applicable, etc.):\n\n\n  ");
   $pdf->SetX($CurrX+50);
   $pdf->SetY($CurrY+23);
   $pdf->SetFont('Arial', 'B', 10);
