@@ -168,17 +168,6 @@ while($inforow = mysqli_fetch_assoc($inforesult)) {
   $pdf->SetXY(14,166);
   $pdf->SetFont('Arial', 'B', 10);
   $pdf->Write(4, "Complete the following details. Do not leave blank. * denotes required fields.\n");
-/*
-  $pdf->Write(5, 'Caregiver Address:  ');
-  $pdf->Cell(90,16,$first_name . ' ' . $last_name . ' ' . $address,1);
-  $CurrY = $pdf->GetY();
-  $CurrX = $pdf->GetX();
-  $pdf->Write(5,' City:  ');
-  $pdf->Cell(47,6,$city,1);
-  $pdf->SetXY($CurrX,$CurrY+8);
-  $pdf->Write(5,' Zip:   ');
-  $pdf->Cell(47,6,$zip,1,1);
- */
   $pdf->Write(4, "\n*");
   $pdf->SetFont('');
   $pdf->Write(4,"Description: (color, fur              ");

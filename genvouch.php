@@ -3,63 +3,62 @@
 define('INCLUDE_CHECK',true);
 require 'connect.php';
 if (isset($_POST['Generate'])) {
-	$numvouch =         $_POST['numvouch'];
-	$vouchstart =       $_POST['vouchstart'];
-	$vouchend =         $_POST['vouchend'];
-	$issuedtofirst =    mysql_real_escape_string($_POST['issuedtofirst']);
-	$issuedtolast =     mysql_real_escape_string($_POST['issuedtolast']);
-	$issuedbyfirst =    mysql_real_escape_string($_POST['issuedbyfirst']);
-	$issuedbylast =     mysql_real_escape_string($_POST['issuedbylast']);
-	$expires =          date('Y-m-d', strtotime($_POST['expires']));
-	$program =          $_POST['program'];
-	$copay =            $_POST['copay'];
-	$ColonyName =       $_POST['ColonyName'];
-	$ColonyAddress =    mysql_real_escape_string($_POST['ColonyAddress']);
-	$ColonyApt =        $_POST['ColonyApt'];
-	$ColonyCity =       $_POST['ColonyCity'];
-	$ColonyCounty =     $_POST['ColonyCounty'];
-	$ColonyZip =        $_POST['ColonyZip'];
-	$ColonyTrapper =    $_POST['ColonyTrapper'];
-	$CaregiverFirst =   $_POST['CaregiverFirst'];
-	$CaregiverLast =    $_POST['CaregiverLast'];
-	$CaregiverDay =     $_POST['CaregiverDay'];
-	$CaregiverOther =   $_POST['CaregiverOther'];
-	$CaregiverEmail =   $_POST['CaregiverEmail'];
-	$CaregiverAddress = $_POST['CaregiverAddress'];
-	$CaregiverApt =     $_POST['CaregiverApt'];
-	$CaregiverCity =    $_POST['CaregiverCity'];
-	$CaregiverCounty =  $_POST['CaregiverCounty'];
-	$CaregiverZip =     $_POST['CaregiverZip'];
-	$copay = ($copay == "") ? -1 : $copay;
-	$sql = "INSERT INTO colonies (colony_id, colony_name, colony_address, colony_aptnum, colony_city,
-				colony_county, colony_zip, NumVouchIssued, VoucherStartNum, VoucherEndNum,
-				trapper, mod_by, mod_date)
-			VALUES (null, '$ColonyName', '$ColonyAddress', '$ColonyApt', '$ColonyCity', '$ColonyCounty',
-					'$ColonyZip', $numvouch, $vouchstart, $vouchend, '$ColonyTrapper', '$slusername', null)";
-	$result = mysql_query($sql) or die('Colonies query failed: ' . "<p>" . $sql . "</p>" . mysql_error());
-	$colonyid = mysql_insert_id();
-	$counter = $numvouch;
-	while ($counter-- > 0) {
-		$sql = "INSERT INTO vouchers (id, VoucherNumber, ExpireDate, IssuedByFirst, IssuedByLast, FirstName, LastName, Program, copay,
-							colony_id, mod_by, mod_date)
-						VALUES (null, $vouchstart, '$expires', '$issuedbyfirst', '$issuedbylast', '$issuedtofirst', '$issuedtolast', '$program', '$copay',
-							$colonyid, '$slusername', null)";
-		$result = mysql_query($sql) or die('Voucher query failed: ' . "<p>" . $sql . "</p>" . mysql_error());
-		++$vouchstart;
-	}
-	$sql = "INSERT INTO caregivers (caregiver_id, first_name, last_name, day_phone, other_phone, email, address,
-						apt_num, city, county, zip, colony_id, mod_by, mod_date)
-					VALUES (null, '$CaregiverFirst', '$CaregiverLast', '$CaregiverDay', '$CaregiverOther', '$CaregiverEmail',
-						'$CaregiverAddress', '$CaregiverApt', '$CaregiverCity', '$CaregiverCounty', '$CaregiverZip', $colonyid, '$slusername', null)";
-	$result = mysql_query($sql) or die('Caregivers query failed: ' . "<p>" . $sql . "</p>" . mysql_error());
-	mysql_close();
-	header('Location: genpdf.php?id=' . $colonyid . '&county=' . $CaregiverCounty);
+  $numvouch =         $_POST['numvouch'];
+  $vouchstart =       $_POST['vouchstart'];
+  $vouchend =         $_POST['vouchend'];
+  $issuedtofirst =    mysqli_real_escape_string($link,$_POST['issuedtofirst']);
+  $issuedtolast =     mysqli_real_escape_string($link,$_POST['issuedtolast']);
+  $issuedbyfirst =    mysqli_real_escape_string($link,$_POST['issuedbyfirst']);
+  $issuedbylast =     mysqli_real_escape_string($link,$_POST['issuedbylast']);
+  $expires =          date('Y-m-d', strtotime($_POST['expires']));
+  $program =          $_POST['program'];
+  $copay =            $_POST['copay'];
+  $ColonyName =       $_POST['ColonyName'];
+  $ColonyAddress =    mysqli_real_escape_string($link,$_POST['ColonyAddress']);
+  $ColonyApt =        $_POST['ColonyApt'];
+  $ColonyCity =       $_POST['ColonyCity'];
+  $ColonyCounty =     $_POST['ColonyCounty'];
+  $ColonyZip =        $_POST['ColonyZip'];
+  $ColonyTrapper =    $_POST['ColonyTrapper'];
+  $CaregiverFirst =   $_POST['CaregiverFirst'];
+  $CaregiverLast =    $_POST['CaregiverLast'];
+  $CaregiverDay =     $_POST['CaregiverDay'];
+  $CaregiverOther =   $_POST['CaregiverOther'];
+  $CaregiverEmail =   $_POST['CaregiverEmail'];
+  $CaregiverAddress = $_POST['CaregiverAddress'];
+  $CaregiverApt =     $_POST['CaregiverApt'];
+  $CaregiverCity =    $_POST['CaregiverCity'];
+  $CaregiverCounty =  $_POST['CaregiverCounty'];
+  $CaregiverZip =     $_POST['CaregiverZip'];
+  $copay = ($copay == "") ? -1 : $copay;
+  $sql = "INSERT INTO colonies (colony_id, colony_name, colony_address, colony_aptnum, colony_city,
+        colony_county, colony_zip, NumVouchIssued, VoucherStartNum, VoucherEndNum,
+        trapper, mod_by, mod_date)
+      VALUES (null, '$ColonyName', '$ColonyAddress', '$ColonyApt', '$ColonyCity', '$ColonyCounty',
+          '$ColonyZip', $numvouch, $vouchstart, $vouchend, '$ColonyTrapper', '$slusername', null)";
+  $result = mysqli_query($link,$sql) or die('Colonies query failed: ' . "<p>" . $sql . "</p>" . mysqli_error($link));
+  $colonyid = mysqli_insert_id($link);
+  $counter = $numvouch;
+  while ($counter-- > 0) {
+    $sql = "INSERT INTO vouchers (id, VoucherNumber, ExpireDate, IssuedByFirst, IssuedByLast, FirstName, LastName, Program, copay,
+              colony_id, mod_by, mod_date)
+            VALUES (null, $vouchstart, '$expires', '$issuedbyfirst', '$issuedbylast', '$issuedtofirst', '$issuedtolast', '$program', '$copay', $colonyid, '$slusername', null)";
+    $result = mysqli_query($link,$sql) or die('Voucher query failed: ' . "<p>" . $sql . "</p>" . mysqli_error($link));
+    ++$vouchstart;
+  }
+  $sql = "INSERT INTO caregivers (caregiver_id, first_name, last_name, day_phone, other_phone, email, address,
+            apt_num, city, county, zip, colony_id, mod_by, mod_date)
+          VALUES (null, '$CaregiverFirst', '$CaregiverLast', '$CaregiverDay', '$CaregiverOther', '$CaregiverEmail',
+            '$CaregiverAddress', '$CaregiverApt', '$CaregiverCity', '$CaregiverCounty', '$CaregiverZip', $colonyid, '$slusername', null)";
+  $result = mysqli_query($link,$sql) or die('Caregivers query failed: ' . "<p>" . $sql . "</p>" . mysqli_error($link));
+  mysqli_close($link);
+  header('Location: genpdf.php?id=' . $colonyid . '&county=' . $CaregiverCounty);
 } else {
-	$sql = "SELECT MAX(VoucherNumber) AS nextvoucher FROM vouchers";
-	$result = mysql_query($sql) or die('Query failed: ' . mysql_error());
-	$row = mysql_fetch_array($result);
-	$nextvoucher = $row['nextvoucher'];
-	mysql_close();}
+  $sql = "SELECT MAX(VoucherNumber) AS nextvoucher FROM vouchers";
+  $result = mysqli_query($link,$sql) or die('Query failed: ' . mysqli_error($link));
+  $row = mysqli_fetch_array($result);
+  $nextvoucher = $row['nextvoucher'];
+  mysqli_close($link);}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -72,74 +71,67 @@ if (isset($_POST['Generate'])) {
     <script src="js/jquery-1.9.1.js" type="text/javascript"></script>
     <script src="js/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
     <script type="text/javascript" charset="utf-8">
-		$(function(){
-		  $.datepicker.setDefaults(
-			$.extend($.datepicker.regional[""])
-		  );
-		  $("#expires").datepicker({ dateFormat: 'yy-mm-dd' });
-		});
+    $(function(){
+      $.datepicker.setDefaults(
+      $.extend($.datepicker.regional[""])
+      );
+      $("#expires").datepicker({ dateFormat: 'yy-mm-dd' });
+    });
     </script>
 <!-- TinyMCE -->
 <script type="text/javascript" src="tiny_mce.js"></script>
 <script type="text/javascript">
-	tinyMCE.init({
-		mode : "textareas",
-		theme : "simple"
-	});
+  tinyMCE.init({
+    mode : "textareas",
+    theme : "simple"
+  });
 </script>
 <!-- /TinyMCE -->
 <link href="SpryAssets/SpryValidationSelect.css" rel="stylesheet" type="text/css" />
 <link href="SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
 <style type="text/css">
 body,td,th {
-	font-family: Verdana, Geneva, sans-serif;
-	font-size: 12px;
-	background-color: #F2E7C4;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 12px;
+  background-color: #F2E7C4;
 }
 </style>
 <script type="text/javascript">
-	function checkVets() {
-	    var fragment="county=" + $("#ColonyCounty").val();
-	    $.ajax({
-	      type: "POST",
-	      url: "countyserved.php",
-	      data: fragment,
-	      async: false,
-	      success: function(returnval) {
+  function checkVets() {
+      var fragment="county=" + $("#ColonyCounty").val();
+      $.ajax({
+        type: "POST",
+        url: "countyserved.php",
+        data: fragment,
+        async: false,
+        success: function(returnval) {
                 if (returnval == 0) {
                     alert("We don't have any vets defined that service " + $("#ColonyCounty").val() + ". Please fix it before continuing.");
                     return false;
                 }
-	      }
-	    });
-	}
+        }
+      });
+  }
 </script>
 <?php
-	if (isset($nextvoucher)) { 
+if (isset($nextvoucher)) { 
 ?>
 <script type="text/javascript">
 
-	function endingvoucher() {
-//		document.vouchers.vouchend.disabled = "false";
-		document.vouchers.vouchend.value = (parseInt(document.vouchers.numvouch.value) + parseInt(document.vouchers.vouchstart.value) - 1);
-//		document.vouchers.vouchend.readonly = "true";
-//		document.vouchers.vouchstart.disabled = "false";
-//		document.vouchers.vouchstart.readonly = "true";
+  function endingvoucher() {
+    document.vouchers.vouchend.value = (parseInt(document.vouchers.numvouch.value) + parseInt(document.vouchers.vouchstart.value) - 1);
+  }
 
-	}
-
-	function BuildColonyName(lname) {
-		document.vouchers.CaregiverFirst.value=document.vouchers.issuedtofirst.value;
-		document.vouchers.CaregiverLast.value=lname;
-//		document.vouchers.ColonyTrapper.value=document.vouchers.ColonyName.value + " " + lname;
-		document.vouchers.ColonyName.value=document.vouchers.ColonyName.value + "_" + lname;
-	}
-	
-	function getSelectedValue() {
-		var index = document.getElementById('ColonyCounty').selectedIndex;
-		document.getElementById('CaregiverCounty').options[index].selected = true;
-//		document.getElementById('program').value=document.getElementById('CaregiverCounty').value;
-	}
+  function BuildColonyName(lname) {
+    document.vouchers.CaregiverFirst.value=document.vouchers.issuedtofirst.value;
+    document.vouchers.CaregiverLast.value=lname;
+    document.vouchers.ColonyName.value=document.vouchers.ColonyName.value + "_" + lname;
+  }
+  
+  function getSelectedValue() {
+    var index = document.getElementById('ColonyCounty').selectedIndex;
+    document.getElementById('CaregiverCounty').options[index].selected = true;
+  }
 
 </script>
 <?php } ?>
@@ -231,27 +223,27 @@ body,td,th {
   </td>
   </tr>
   <tr>
-  	<td colspan="2">
-   	  <h2>Colony Information </h2></td>
+    <td colspan="2">
+       <h2>Colony Information </h2></td>
   </tr>
   <tr>
-  	<td align="right">Colony name:</td>
+    <td align="right">Colony name:</td>
     <td><input type="text" name="ColonyName" id="ColonyName" /></td>
   </tr>
   <tr>
-  	<td align="right">Colony address:</td>
+    <td align="right">Colony address:</td>
     <td><input type="text" name="ColonyAddress" id="ColonyAddress" onChange="this.form.CaregiverAddress.value=value;" /></td>
   </tr>
   <tr>
-  	<td align="right">Apt #</td>
+    <td align="right">Apt #</td>
     <td><input name="ColonyApt" type="text" id="ColonyApt" size="6" onChange="this.form.CaregiverApt.value=value;" /></td>
   </tr>
   <tr>
-  	<td align="right">City</td>
+    <td align="right">City</td>
     <td><input name="ColonyCity" type="text" id="ColonyCity" size="20" onChange="this.form.CaregiverCity.value=value;" /></td>
   </tr>
   <tr>
-  	<td align="right">County</td>
+    <td align="right">County</td>
     <td><select name="ColonyCounty" id="ColonyCounty" onChange="getSelectedValue(); checkVets(); ">
             <option value="">Choose County:</option>
             <option value="Beaver">Beaver</option>
@@ -287,18 +279,18 @@ body,td,th {
     </td>
   </tr>
   <tr>
-  	<td align="right">Zip</td>
+    <td align="right">Zip</td>
     <td><span id="sprytextfield4">
       <input type="text" name="ColonyZip" id="ColonyZip" onChange="this.form.CaregiverZip.value=value;" />
       <span class="textfieldInvalidFormatMsg">Invalid format.</span></span></td>
   </tr>
   <tr>
-  	<td align="right">Trapper</td>
+    <td align="right">Trapper</td>
     <td><input type="text" name="ColonyTrapper" id="ColonyTrapper" /></td>
   </tr>
   <tr>
-  	<td colspan="2">
-   	  <h2>Caregiver Information </h2></td>
+    <td colspan="2">
+       <h2>Caregiver Information </h2></td>
   </tr>
   <tr>
     <td align="right">First name:</td>
@@ -311,25 +303,25 @@ body,td,th {
     <td>Other phone:<input type="text" name="CaregiverOther" id="CaregiverOther" /></td>
   </tr>
   <tr>
-  	<td align="right">Email</td>
+    <td align="right">Email</td>
     <td><span id="sprytextfield5">
       <input type="text" name="CaregiverEmail" id="CaregiverEmail" />
       <span class="textfieldInvalidFormatMsg">Invalid format.</span></span></td>
   </tr>
   <tr>
-  	<td align="right">Address</td>
+    <td align="right">Address</td>
     <td><input type="text" name="CaregiverAddress" id="CaregiverAddress" /></td>
   </tr>
   <tr>
-  	<td align="right">Apt #</td>
+    <td align="right">Apt #</td>
     <td><input name="CaregiverApt" type="text" id="CaregiverApt" size="6" /></td>
   </tr>
   <tr>
-  	<td align="right">City</td>
+    <td align="right">City</td>
     <td><input type="text" name="CaregiverCity" id="CaregiverCity" /></td>
   </tr>
   <tr>
-  	<td align="right">County</td>
+    <td align="right">County</td>
     <td><select name="CaregiverCounty" id="CaregiverCounty">
             <option value="">Choose County:</option>
             <option value="Beaver">Beaver</option>
@@ -361,17 +353,17 @@ body,td,th {
             <option value="Washington">Washington</option>
             <option value="Wayne">Wayne</option>
             <option value="Weber">Weber</option>
-    	</select>
+      </select>
     </td>
   </tr>
   <tr>
-  	<td align="right">Zip</td>
+    <td align="right">Zip</td>
     <td><span id="sprytextfield6">
     <input name="CaregiverZip" type="text" id="CaregiverZip" size="10" />
 <span class="textfieldInvalidFormatMsg">Invalid format.</span></span></td>
   </tr>
   <tr>
-  	<td><p>&nbsp;</p></td>
+    <td><p>&nbsp;</p></td>
     <td></td>
   </tr>
   <tr>
@@ -380,6 +372,9 @@ body,td,th {
   </tr>
 </table>
 </form>
+<!--
+  The following came from my daliance with Dreamweaver 8
+-->
 <script type="text/javascript">
 var spryselect1 = new Spry.Widget.ValidationSelect("spryselect1");
 var sprytextfield1 = new Spry.Widget.ValidationTextField("sprytextfield1");
